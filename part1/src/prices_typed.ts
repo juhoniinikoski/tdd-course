@@ -77,14 +77,14 @@ function createApp(database: Database) {
   function calculateReduction(date: Temporal.PlainDate | undefined) {
     let reduction = 0;
     const newDate = date ? new Date(date.toString()) : undefined;
-    if (newDate && isMonday(newDate) && !isHoliday(newDate)) {
+    if (date && isMonday(date) && !isHoliday(newDate)) {
       reduction = 35;
     }
     return reduction;
   }
 
-  function isMonday(date: Date) {
-    return date.getDay() === 1;
+  function isMonday(date: Temporal.PlainDate) {
+    return date.dayOfWeek === 1;
   }
 
   function isHoliday(date: Date | undefined) {
