@@ -20,16 +20,7 @@ export class RotatingShape {
   }
 
   rotateRight() {
-    const size = this.shape.length;
-    for (let i = 0; i < size; i++) {
-      for (let j = i + 1; j < size; j++) {
-        [this.shape[i][j], this.shape[j][i]] = [this.shape[j][i], this.shape[i][j]];
-      }
-    }
-
-    for (let i = 0; i < size; i++) {
-      this.shape[i].reverse();
-    }
+    this.shape = this.shape[0].map((_, i) => this.shape.map((row) => row[i]).reverse());
     return new RotatingShape(this.shape);
   }
 
