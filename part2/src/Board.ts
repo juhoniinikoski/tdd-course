@@ -27,6 +27,13 @@ export class Board {
     if (!this.fallingBlockPosition) return;
 
     const [y, x] = this.fallingBlockPosition;
+
+    if (y + 1 === this.height) {
+      this.fallingBlock = undefined;
+      this.fallingBlockPosition = undefined;
+      return;
+    }
+
     const block = this.matrix[y][x];
     this.matrix[y][x] = ".";
     this.matrix[y + 1][x] = block;
