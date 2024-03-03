@@ -33,6 +33,10 @@ export class Board {
     this.fallingBlockPosition = [y + 1, x];
   }
 
+  hasFalling() {
+    return !!this.fallingBlock;
+  }
+
   toString() {
     return this.matrix.map((row) => row.join("").concat("\n")).join("");
   }
