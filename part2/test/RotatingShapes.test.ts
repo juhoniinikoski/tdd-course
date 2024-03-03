@@ -1,7 +1,6 @@
-/*
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { RotatingShape } from "../src/RotatingShape.mjs";
+import { RotatingShape } from "../src/RotatingShape";
 
 describe("Rotating 3x3 shape", () => {
   const shape = RotatingShape.fromString(
@@ -18,23 +17,22 @@ describe("Rotating 3x3 shape", () => {
     );
   });
 
-  test.skip("can be rotated right/clockwise", () => {
-    expect(shape.rotateRight().toString()).to.equalShape(
-      `GDA
-       HEB
-       IFC`
-    );
-  });
+  // test.skip("can be rotated right/clockwise", () => {
+  //   expect(shape.rotateRight().toString()).to.equalShape(
+  //     `GDA
+  //      HEB
+  //      IFC`
+  //   );
+  // });
 
-  test.skip("can be rotated left/counter-clockwise", () => {
-    expect(shape.rotateLeft().toString()).to.equalShape(
-      `CFI
-       BEH
-       ADG`
-    );
-  });
+  // test.skip("can be rotated left/counter-clockwise", () => {
+  //   expect(shape.rotateLeft().toString()).to.equalShape(
+  //     `CFI
+  //      BEH
+  //      ADG`
+  //   );
+  // });
 });
-*/
 
 /*
 describe("Rotating 5x5 shape", () => {
