@@ -20,6 +20,16 @@ export class Board {
     this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
   }
 
+  tick() {
+    if (!this.fallingBlockPosition) return;
+
+    const [y, x] = this.fallingBlockPosition;
+    const block = this.matrix[y][x];
+    this.matrix[y][x] = ".";
+    this.matrix[y + 1][x] = block;
+    this.fallingBlockPosition = [y + 1, x];
+  }
+
   toString() {
     return this.matrix.map((row) => row.join("").concat("\n")).join("");
   }
