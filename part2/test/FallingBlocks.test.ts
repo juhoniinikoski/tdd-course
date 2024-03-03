@@ -29,15 +29,15 @@ describe("Falling blocks", () => {
       );
     });
 
-    // test.skip("it moves down one row per tick", () => {
-    //   board.tick();
+    test("it moves down one row per tick", () => {
+      board.tick();
 
-    //   expect(board.toString()).to.equalShape(
-    //     `...
-    //      .X.
-    //      ...`
-    //   );
-    // });
+      expect(board.toString()).to.equalShape(
+        `...
+         .X.
+         ...`
+      );
+    });
 
     // test.skip("at most one block may be falling at a time", () => {
     //   const before = board.toString();
