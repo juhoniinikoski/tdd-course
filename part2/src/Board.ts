@@ -15,6 +15,9 @@ export class Board {
   }
 
   drop(block: string) {
+    if (this.fallingBlock) {
+      throw new Error("already falling");
+    }
     this.fallingBlock = block;
     this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
     this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
