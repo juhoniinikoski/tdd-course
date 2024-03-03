@@ -20,13 +20,12 @@ export class RotatingShape {
   }
 
   rotateRight() {
-    this.shape = this.shape[0].map((_, i) => this.shape.map((row) => row[i]).reverse());
-    return new RotatingShape(this.shape);
+    const newShape = this.shape[0].map((_, i) => this.shape.map((row) => row[i]).reverse());
+    return new RotatingShape(newShape);
   }
 
   rotateLeft() {
-    this.shape = this.shape.map((row, i) => row.map((_, j) => this.shape[j][i]).reverse());
-    return new RotatingShape(this.shape);
+    return this.rotateRight().rotateRight().rotateRight();
   }
 
   toString() {
