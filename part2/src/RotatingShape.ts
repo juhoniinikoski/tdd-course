@@ -33,6 +33,11 @@ export class RotatingShape {
     return new RotatingShape(this.shape);
   }
 
+  rotateLeft() {
+    this.shape = this.shape.map((row, i) => row.map((_, j) => this.shape[j][i]).reverse());
+    return new RotatingShape(this.shape);
+  }
+
   toString() {
     return this.shape.map((row) => row.join("").concat("\n")).join("");
   }
