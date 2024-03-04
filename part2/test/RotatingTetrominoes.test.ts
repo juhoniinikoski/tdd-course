@@ -1,8 +1,8 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { Tetromino } from "../src/Tetromino";
+import { ShapeType, Tetromino } from "../src/Tetromino";
 
-function distinctOrientations(shape: any) {
+function distinctOrientations(shape: Tetromino) {
   const distinct = new Set();
   let goingRight = shape;
   let goingLeft = shape;
@@ -42,9 +42,9 @@ describe("The T shape", () => {
     );
   });
 
-  // test.skip("has 4 distinct orientations", () => {
-  //   expect(distinctOrientations(shape).size).to.equal(4);
-  // });
+  test("has 4 distinct orientations", () => {
+    expect(distinctOrientations(shape).size).to.equal(4);
+  });
 });
 
 /*
