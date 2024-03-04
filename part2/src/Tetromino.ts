@@ -6,7 +6,7 @@ const SHAPE_TYPES = {
   O: "O",
 } as const;
 
-type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
+export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 
 export class Tetromino {
   currentOrientation;
@@ -37,7 +37,7 @@ export class Tetromino {
      ...`
   );
 
-  static fromString(currentOrientation: any, orientationCount: number, initialShape: string) {
+  static fromString(currentOrientation: number, orientationCount: number, initialShape: string) {
     const shape = RotatingShape.fromString(initialShape);
     const orientations = [shape, shape.rotateRight(), shape.rotateRight().rotateRight(), shape.rotateLeft()].slice(
       0,
@@ -49,7 +49,7 @@ export class Tetromino {
   constructor(currentOrientation: number, orientations: RotatingShape[]) {
     this.currentOrientation = (currentOrientation + orientations.length) % orientations.length;
     this.orientations = orientations;
-    this.shape = orientations[currentOrientation];
+    this.shape = orientations[this.currentOrientation];
   }
 
   rotateRight() {
