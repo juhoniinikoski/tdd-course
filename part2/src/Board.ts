@@ -1,10 +1,12 @@
+import { Block } from "./Block";
+
 type Matrix = string[][];
 
 export class Board {
   width: number;
   height: number;
   matrix: Matrix = [];
-  fallingBlock: string | undefined;
+  fallingBlock: Block | undefined;
   fallingBlockPosition: [number, number] | undefined;
 
   constructor(width: number, height: number) {
@@ -18,7 +20,7 @@ export class Board {
     if (this.fallingBlock) {
       throw new Error("already falling");
     }
-    this.fallingBlock = block;
+    this.fallingBlock = new Block(block);
     this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
     this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
   }
