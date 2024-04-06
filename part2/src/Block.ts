@@ -4,6 +4,14 @@ export class Block {
 
   constructor() {
     this.width = 1;
-    this.height = 0;
+    this.height = 1;
+  }
+
+  public getWidth() {
+    return this.width;
+  }
+
+  public getHeight() {
+    return this.height;
   }
 }
