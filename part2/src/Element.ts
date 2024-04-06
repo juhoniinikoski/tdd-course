@@ -2,21 +2,25 @@ import { Shape } from "./Tetromino";
 
 export class Element implements Shape {
   shape: Shape;
-  x: number;
   y: number;
+  x: number;
 
-  constructor(shape: Shape, x: number, y: number) {
+  constructor(shape: Shape, y: number, x: number) {
     this.shape = shape;
-    this.x = x;
     this.y = y;
+    this.x = x;
+  }
+
+  move() {
+    return new Element(this.shape, this.y + 1, this.x);
   }
 
   getHeight() {
-    return this.shape.getHeight();
+    return this.y + this.shape.getHeight();
   }
 
   getWidth() {
-    return this.shape.getWidth();
+    return this.x + this.shape.getWidth();
   }
 
   getBlock(y: number, x: number) {

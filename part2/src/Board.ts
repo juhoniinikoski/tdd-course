@@ -4,12 +4,11 @@ import { Element } from "./Element";
 
 type Matrix = string[][];
 
-export class Board {
+export class Board implements Shape {
   width: number;
   height: number;
   matrix: Matrix = [];
   fallingBlock: Element | undefined;
-  fallingBlockPosition: [number, number] | undefined;
 
   constructor(width: number, height: number) {
     this.width = width;
@@ -26,33 +25,58 @@ export class Board {
     if (typeof block === "string") {
       block = new Block(block);
     }
-    this.fallingBlock = new Element(block, Math.floor((this.width - block.getWidth()) / 2), 0);
-    this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
-    this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block.getBlock(0, 0) ?? "";
+    this.fallingBlock = new Element(block, 0, Math.floor((this.width - block.getWidth()) / 2));
   }
 
   tick() {
-    if (!this.fallingBlockPosition) return;
+    if (!this.hasFalling()) return;
 
-    const [y, x] = this.fallingBlockPosition;
-
-    if (y + 1 === this.height || this.matrix[y + 1][x] !== ".") {
+    if (
+      this.fallingBlock!.y + 1 === this.height ||
+      this.matrix[this.fallingBlock!.y + 1][this.fallingBlock!.x] !== "."
+    ) {
+      for (let row = 0; row < this.getHeight(); row++) {
+        for (let col = 0; col < this.getWidth(); col++) {
+          this.matrix[row][col] = this.getBlock(row, col) ?? ".";
+        }
+      }
       this.fallingBlock = undefined;
-      this.fallingBlockPosition = undefined;
       return;
     }
 
-    const block = this.matrix[y][x];
-    this.matrix[y][x] = ".";
-    this.matrix[y + 1][x] = block;
-    this.fallingBlockPosition = [y + 1, x];
+    this.fallingBlock = this.fallingBlock!.move();
   }
 
   hasFalling() {
     return !!this.fallingBlock;
   }
 
+  getWidth() {
+    return this.width;
+  }
+
+  getHeight() {
+    return this.height;
+  }
+
+  getBlock(row: number, col: number) {
+    if (this.fallingBlock) {
+      const block = this.fallingBlock.getBlock(row, col);
+      if (block !== ".") {
+        return block;
+      }
+    }
+    return this.matrix[row][col];
+  }
+
   toString() {
-    return this.matrix.map((row) => row.join("").concat("\n")).join("");
+    let s = "";
+    for (let row = 0; row < this.getHeight(); row++) {
+      for (let col = 0; col < this.getWidth(); col++) {
+        s += this.getBlock(row, col);
+      }
+      s += "\n";
+    }
+    return s;
   }
 }
