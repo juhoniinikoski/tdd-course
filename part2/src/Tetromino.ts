@@ -8,7 +8,11 @@ const SHAPE_TYPES = {
 
 export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 
-export class Tetromino {
+interface Shape {
+  getWidth: () => number;
+}
+
+export class Tetromino implements Shape {
   currentOrientation;
   orientations;
   shape;
@@ -58,6 +62,10 @@ export class Tetromino {
 
   rotateLeft() {
     return new Tetromino(this.orientations.length - this.currentOrientation - 1, this.orientations);
+  }
+
+  getWidth() {
+    return this.shape.width;
   }
 
   toString() {
