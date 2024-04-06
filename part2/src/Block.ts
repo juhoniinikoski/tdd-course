@@ -1,4 +1,6 @@
-export class Block {
+import { Shape } from "./Tetromino";
+
+export class Block implements Shape {
   private width: number;
   private height: number;
   private symbol: string;

@@ -1,6 +1,6 @@
 import { Shape } from "./Tetromino";
 
-export class Element {
+export class Element implements Shape {
   shape: Shape;
   x: number;
   y: number;
@@ -9,5 +9,13 @@ export class Element {
     this.shape = shape;
     this.x = x;
     this.y = y;
+  }
+
+  getHeight() {
+    return this.shape.getHeight();
+  }
+
+  getWidth() {
+    return this.shape.getWidth();
   }
 }

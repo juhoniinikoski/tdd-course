@@ -1,5 +1,6 @@
 import { Block } from "./Block";
 import { Shape } from "./Tetromino";
+import { Element } from "./Element";
 
 type Matrix = string[][];
 
@@ -7,7 +8,7 @@ export class Board {
   width: number;
   height: number;
   matrix: Matrix = [];
-  fallingBlock: Block | undefined;
+  fallingBlock: Shape | undefined;
   fallingBlockPosition: [number, number] | undefined;
 
   constructor(width: number, height: number) {
@@ -26,6 +27,8 @@ export class Board {
       this.fallingBlock = new Block(block);
       this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
       this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
+    } else {
+      this.fallingBlock = new Element(block, Math.floor((this.width - block.getWidth()) / 2), 0);
     }
   }
 
