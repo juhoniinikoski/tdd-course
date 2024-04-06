@@ -1,10 +1,12 @@
 export class Block {
   private width: number;
   private height: number;
+  private symbol: string;
 
-  constructor() {
+  constructor(symbol: string) {
     this.width = 1;
     this.height = 1;
+    this.symbol = symbol;
   }
 
   public getWidth() {
@@ -13,5 +15,9 @@ export class Block {
 
   public getHeight() {
     return this.height;
+  }
+
+  public getSymbol() {
+    return this.symbol;
   }
 }
