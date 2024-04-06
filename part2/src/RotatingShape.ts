@@ -38,7 +38,7 @@ export class RotatingShape implements Shape {
     return this.width;
   }
 
-  getBlock(x: number, y: number) {
+  getBlock(y: number, x: number) {
     return this.shape[y][x];
   }
 

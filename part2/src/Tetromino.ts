@@ -11,7 +11,7 @@ export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 export interface Shape {
   getWidth(): number;
   getHeight(): number;
-  getBlock(x: number, y: number): string | undefined;
+  getBlock(y: number, x: number): string | undefined;
 }
 
 export class Tetromino implements Shape {
@@ -74,8 +74,8 @@ export class Tetromino implements Shape {
     return this.shape.height;
   }
 
-  getBlock(x: number, y: number) {
-    return this.orientations[this.currentOrientation].getBlock(x, y);
+  getBlock(y: number, x: number) {
+    return this.orientations[this.currentOrientation].getBlock(y, x);
   }
 
   toString() {

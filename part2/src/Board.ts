@@ -8,7 +8,7 @@ export class Board {
   width: number;
   height: number;
   matrix: Matrix = [];
-  fallingBlock: Shape | undefined;
+  fallingBlock: Element | undefined;
   fallingBlockPosition: [number, number] | undefined;
 
   constructor(width: number, height: number) {
@@ -24,13 +24,11 @@ export class Board {
     }
 
     if (typeof block === "string") {
-      this.fallingBlock = new Block(block);
-      this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
-      this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
-    } else {
-      this.fallingBlock = new Element(block, Math.floor((this.width - block.getWidth()) / 2), 0);
-      this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
+      block = new Block(block);
     }
+    this.fallingBlock = new Element(block, Math.floor((this.width - block.getWidth()) / 2), 0);
+    this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
+    this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block.getBlock(0, 0) ?? "";
   }
 
   tick() {

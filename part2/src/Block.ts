@@ -19,7 +19,7 @@ export class Block implements Shape {
     return this.height;
   }
 
-  public getBlock(x: number, y: number) {
+  public getBlock(y: number, x: number) {
     if (x === 0 && y === 0) return this.symbol;
   }
 }

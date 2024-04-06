@@ -19,7 +19,11 @@ export class Element implements Shape {
     return this.shape.getWidth();
   }
 
-  getBlock(x: number, y: number) {
-    return undefined;
+  getBlock(y: number, x: number) {
+    if (y >= this.y && y < this.getHeight() && x >= this.x && x < this.getWidth()) {
+      return this.shape.getBlock(y - this.y, x - this.x);
+    } else {
+      return ".";
+    }
   }
 }
