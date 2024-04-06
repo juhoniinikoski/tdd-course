@@ -8,7 +8,7 @@ const SHAPE_TYPES = {
 
 export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 
-interface Shape {
+export interface Shape {
   getWidth: () => number;
   getHeight: () => number;
 }

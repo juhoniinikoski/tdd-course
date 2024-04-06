@@ -1,4 +1,5 @@
 import { Block } from "./Block";
+import { Shape } from "./Tetromino";
 
 type Matrix = string[][];
 
@@ -16,13 +17,16 @@ export class Board {
     this.matrix = Array.from({ length: this.height }, () => ".".repeat(this.width).split(""));
   }
 
-  drop(block: string) {
+  drop(block: Shape | string) {
     if (this.fallingBlock) {
       throw new Error("already falling");
     }
-    this.fallingBlock = new Block(block);
-    this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
-    this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
+
+    if (typeof block === "string") {
+      this.fallingBlock = new Block(block);
+      this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
+      this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
+    }
   }
 
   tick() {
