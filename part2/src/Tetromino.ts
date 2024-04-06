@@ -9,8 +9,9 @@ const SHAPE_TYPES = {
 export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 
 export interface Shape {
-  getWidth: () => number;
-  getHeight: () => number;
+  getWidth(): number;
+  getHeight(): number;
+  getBlock(x: number, y: number): string | undefined;
 }
 
 export class Tetromino implements Shape {
@@ -71,6 +72,10 @@ export class Tetromino implements Shape {
 
   getHeight() {
     return this.shape.height;
+  }
+
+  getBlock(x: number, y: number) {
+    return undefined;
   }
 
   toString() {

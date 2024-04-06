@@ -18,4 +18,8 @@ export class Element implements Shape {
   getWidth() {
     return this.shape.getWidth();
   }
+
+  getBlock(x: number, y: number) {
+    return undefined;
+  }
 }

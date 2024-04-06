@@ -29,6 +29,7 @@ export class Board {
       this.matrix[this.fallingBlockPosition[0]][this.fallingBlockPosition[1]] = block;
     } else {
       this.fallingBlock = new Element(block, Math.floor((this.width - block.getWidth()) / 2), 0);
+      this.fallingBlockPosition = [0, Math.floor(this.width / 2)];
     }
   }
 
