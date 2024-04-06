@@ -1,4 +1,6 @@
-export class RotatingShape {
+import { Shape } from "./Tetromino";
+
+export class RotatingShape implements Shape {
   width: number;
   height: number;
   shape;
@@ -26,6 +28,18 @@ export class RotatingShape {
 
   rotateLeft() {
     return this.rotateRight().rotateRight().rotateRight();
+  }
+
+  getHeight() {
+    return this.height;
+  }
+
+  getWidth() {
+    return this.width;
+  }
+
+  getBlock(x: number, y: number) {
+    return this.shape[y][x];
   }
 
   toString() {

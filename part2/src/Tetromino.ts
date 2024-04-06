@@ -75,7 +75,7 @@ export class Tetromino implements Shape {
   }
 
   getBlock(x: number, y: number) {
-    return undefined;
+    return this.orientations[this.currentOrientation].getBlock(x, y);
   }
 
   toString() {
