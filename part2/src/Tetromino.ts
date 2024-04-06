@@ -10,6 +10,7 @@ export type ShapeType = (typeof SHAPE_TYPES)[keyof typeof SHAPE_TYPES];
 
 interface Shape {
   getWidth: () => number;
+  getHeight: () => number;
 }
 
 export class Tetromino implements Shape {
@@ -66,6 +67,10 @@ export class Tetromino implements Shape {
 
   getWidth() {
     return this.shape.width;
+  }
+
+  getHeight() {
+    return this.shape.height;
   }
 
   toString() {
