@@ -2,12 +2,6 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { Board } from "../src/Board";
 import { Tetromino } from "../src/Tetromino";
 
-function fallToBottom(board: Board) {
-  for (let i = 0; i < 10; i++) {
-    board.tick();
-  }
-}
-
 describe("Moving tetrominoes", () => {
   let board: Board;
   beforeEach(() => {
@@ -113,6 +107,22 @@ describe("Moving tetrominoes", () => {
   test("Cannot be moved down beyond the board (will stop falling)", () => {
     board.drop(Tetromino.T_SHAPE);
     for (let i = 0; i < 10; i++) {
+      board.moveDown();
+    }
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ..........
+       ....T.....
+       ...TTT....`
+    );
+  });
+
+  test("Cannot be moved left through other blocks", () => {
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 10; i++) {
       board.moveLeft();
       board.moveDown();
     }
@@ -134,8 +144,28 @@ describe("Moving tetrominoes", () => {
     );
   });
 
-  test("Cannot be moved left through other blocks", () => {});
+  test("Cannot be moved right through other blocks", () => {
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 10; i++) {
+      board.moveRight();
+      board.moveDown();
+    }
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 4; i++) {
+      board.moveDown();
+    }
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
 
-  test.skip("Cannot be moved right through other blocks", () => {});
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ..........
+       .....T..T.
+       ....TTTTTT`
+    );
+  });
   test.skip("Cannot be moved down through other blocks (will stop falling)", () => {});
 });
