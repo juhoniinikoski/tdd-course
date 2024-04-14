@@ -15,6 +15,10 @@ export class Element implements Shape {
     return new Element(this.shape, this.y + 1, this.x);
   }
 
+  moveLeft() {
+    return new Element(this.shape, this.y, this.x - 1);
+  }
+
   getHeight() {
     return this.y + this.shape.getHeight();
   }

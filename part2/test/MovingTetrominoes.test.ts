@@ -1,7 +1,27 @@
-import { describe, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
+import { Board } from "../src/Board";
+import { Tetromino } from "../src/Tetromino";
 
 describe("Moving tetrominoes", () => {
-  test.skip("Can be moved left", () => {});
+  let board: Board;
+  beforeEach(() => {
+    board = new Board(10, 6);
+  });
+
+  test("Can be moved left", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.moveLeft();
+
+    expect(board.toString()).to.equalShape(
+      `...T......
+       ..TTT.....
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
   test.skip("Can be moved right", () => {});
   test.skip("Can be moved down", () => {});
   test.skip("Cannot be moved left beyond the board", () => {});
