@@ -8,9 +8,8 @@ describe("Falling rotating tetrominoes", () => {
     board = new Board(10, 6);
   });
 
-  test("Falling tetromino can be rotated", () => {
+  test("Falling tetromino can be rotated right (T-shape)", () => {
     board.drop(Tetromino.T_SHAPE);
-    board.tick();
     board.rotateRight();
 
     expect(board.toString()).to.equalShape(
@@ -23,6 +22,56 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
-  test.skip("Cannot be rotated when there is no room to rotate");
+  test("Falling tetromino can be rotated right (I-shape)", () => {
+    board.drop(Tetromino.I_SHAPE);
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `....I.....
+       ....I.....
+       ....I.....
+       ....I.....
+       ..........
+       ..........`
+    );
+  });
+
+  test("Falling tetromino can be rotated right (O-shape)", () => {
+    board.drop(Tetromino.O_SHAPE);
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ....OO....
+       ....OO....
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("Cannot be rotated when there is no room to rotate (T-shape) due to wall", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.rotateRight();
+    board.rotateRight();
+    board.rotateRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `.........T
+       ........TT
+       .........T
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
   test.skip("Performs wall kick");
 });
