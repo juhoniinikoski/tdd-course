@@ -200,5 +200,37 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
+  test("Cannot be rotated left when there is no room to rotate (T-shape) due to another element", () => {
+    board.drop(Tetromino.O_SHAPE);
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+
+    board.drop(Tetromino.T_SHAPE);
+    board.tick();
+    board.rotateRight();
+    board.tick();
+    board.tick();
+    board.moveLeft();
+    board.moveLeft();
+    board.rotateLeft();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ..T.......
+       OOTT......
+       OOT.......`
+    );
+  });
+
   test.skip("Performs wall kick");
 });

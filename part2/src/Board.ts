@@ -200,6 +200,12 @@ export class Board implements Shape {
       }
     }
 
+    for (const part of parts) {
+      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
+        hitAnother = true;
+      }
+    }
+
     stop = hitLeftWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;
