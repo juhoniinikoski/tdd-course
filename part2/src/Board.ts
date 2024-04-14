@@ -101,11 +101,22 @@ export class Board implements Shape {
     return this.matrix[row][col];
   }
 
+  moveRight() {
+    if (this.hasFalling()) {
+      const newElement = this.fallingBlock?.moveRight();
+      this.fallingBlock = newElement;
+    }
+  }
+
   moveLeft() {
     if (this.hasFalling()) {
       const newElement = this.fallingBlock?.moveLeft();
       this.fallingBlock = newElement;
     }
+  }
+
+  moveDown() {
+    this.tick();
   }
 
   toString() {
