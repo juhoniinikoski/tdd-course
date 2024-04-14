@@ -53,6 +53,7 @@ export class Board implements Shape {
     const parts = this.getParts(newElement);
 
     let hitBottom = false;
+    let hitAnother = false;
 
     for (const part of parts) {
       if (part[0] >= this.getHeight()) {
@@ -60,7 +61,13 @@ export class Board implements Shape {
       }
     }
 
-    if (hitBottom || this.getBlock(newElement.y, this.fallingBlock!.x) !== ".") {
+    for (const part of parts) {
+      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
+        hitAnother = true;
+      }
+    }
+
+    if (hitBottom || hitAnother) {
       for (let row = 0; row < this.getHeight(); row++) {
         for (let col = 0; col < this.getWidth(); col++) {
           this.matrix[row][col] = this.getBlock(row, col) ?? ".";
