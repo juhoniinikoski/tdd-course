@@ -38,6 +38,10 @@ export class Element implements Shape {
     return new Element(this.shape.rotateRight(), this.y, this.x);
   }
 
+  rotateLeft() {
+    return new Element(this.shape.rotateRight(), this.y, this.x);
+  }
+
   getBlock(y: number, x: number) {
     if (y >= this.y && y < this.getHeight() && x >= this.x && x < this.getWidth()) {
       return this.shape.getBlock(y - this.y, x - this.x);

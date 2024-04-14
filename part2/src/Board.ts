@@ -185,6 +185,12 @@ export class Board implements Shape {
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }
 
+  rotateLeft() {
+    if (!this.hasFalling()) return;
+    const newElement = this.fallingBlock!.rotateLeft();
+    this.fallingBlock = newElement;
+  }
+
   toString() {
     let s = "";
     for (let row = 0; row < this.getHeight(); row++) {
