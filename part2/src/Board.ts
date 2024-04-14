@@ -17,6 +17,30 @@ export class Board implements Shape {
     this.matrix = Array.from({ length: this.height }, () => ".".repeat(this.width).split(""));
   }
 
+  private checkWalls(element: Element) {
+    const parts = this.getParts(element);
+
+    for (const part of parts) {
+      if (part[0] >= this.getHeight() || part[1] >= this.getWidth()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private checkAnotherElements(element: Element) {
+    const parts = this.getParts(element);
+
+    for (const part of parts) {
+      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   drop(block: Shape | string) {
     if (this.fallingBlock) {
       throw new Error("already falling");
@@ -50,23 +74,11 @@ export class Board implements Shape {
     if (!this.hasFalling()) return;
 
     const newElement = this.fallingBlock!.move();
-    const parts = this.getParts(newElement);
 
-    let hitBottom = false;
-    let hitAnother = false;
     let stop = false;
 
-    for (const part of parts) {
-      if (part[0] >= this.getHeight()) {
-        hitBottom = true;
-      }
-    }
-
-    for (const part of parts) {
-      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
-        hitAnother = true;
-      }
-    }
+    const hitBottom = this.checkWalls(newElement);
+    const hitAnother = this.checkAnotherElements(newElement);
 
     if (hitBottom || hitAnother) {
       for (let row = 0; row < this.getHeight(); row++) {
@@ -106,25 +118,12 @@ export class Board implements Shape {
     if (!this.hasFalling()) return;
 
     const newElement = this.fallingBlock!.moveRight();
-    const parts = this.getParts(newElement);
 
-    let hitRightWall = false;
-    let hitAnother = false;
-    let stop = false;
+    const hitRightWall = this.checkWalls(newElement);
+    const hitAnother = this.checkAnotherElements(newElement);
 
-    for (const part of parts) {
-      if (part[1] >= this.getWidth()) {
-        hitRightWall = true;
-      }
-    }
+    const stop = hitRightWall || hitAnother;
 
-    for (const part of parts) {
-      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
-        hitAnother = true;
-      }
-    }
-
-    stop = hitRightWall || hitAnother;
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }
 
@@ -132,25 +131,11 @@ export class Board implements Shape {
     if (!this.hasFalling()) return;
 
     const newElement = this.fallingBlock!.moveLeft();
-    const parts = this.getParts(newElement);
 
-    let hitLeftWall = false;
-    let hitAnother = false;
-    let stop = false;
+    const hitLeftWall = this.checkWalls(newElement);
+    const hitAnother = this.checkAnotherElements(newElement);
 
-    for (const part of parts) {
-      if (part[1] < 0) {
-        hitLeftWall = true;
-      }
-    }
-
-    for (const part of parts) {
-      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
-        hitAnother = true;
-      }
-    }
-
-    stop = hitLeftWall || hitAnother;
+    const stop = hitLeftWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }
@@ -162,25 +147,11 @@ export class Board implements Shape {
   rotateRight() {
     if (!this.hasFalling()) return;
     const newElement = this.fallingBlock!.rotateRight();
-    const parts = this.getParts(newElement);
 
-    let hitRightWall = false;
-    let hitAnother = false;
-    let stop = false;
+    const hitRightWall = this.checkWalls(newElement);
+    const hitAnother = this.checkAnotherElements(newElement);
 
-    for (const part of parts) {
-      if (part[1] >= this.getWidth()) {
-        hitRightWall = true;
-      }
-    }
-
-    for (const part of parts) {
-      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
-        hitAnother = true;
-      }
-    }
-
-    stop = hitRightWall || hitAnother;
+    const stop = hitRightWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }
@@ -188,25 +159,11 @@ export class Board implements Shape {
   rotateLeft() {
     if (!this.hasFalling()) return;
     const newElement = this.fallingBlock!.rotateLeft();
-    const parts = this.getParts(newElement);
 
-    let hitLeftWall = false;
-    let hitAnother = false;
-    let stop = false;
+    let hitLeftWall = this.checkWalls(newElement);
+    let hitAnother = this.checkAnotherElements(newElement);
 
-    for (const part of parts) {
-      if (part[1] < 0) {
-        hitLeftWall = true;
-      }
-    }
-
-    for (const part of parts) {
-      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
-        hitAnother = true;
-      }
-    }
-
-    stop = hitLeftWall || hitAnother;
+    const stop = hitLeftWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }
