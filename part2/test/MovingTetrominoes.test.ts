@@ -89,7 +89,24 @@ describe("Moving tetrominoes", () => {
     );
   });
 
-  test.skip("Cannot be moved right beyond the board", () => {});
+  test("Cannot be moved right beyond the board", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+
+    expect(board.toString()).to.equalShape(
+      `........T.
+       .......TTT
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
   test.skip("Cannot be moved down beyond the board (will stop falling)", () => {});
   test.skip("Cannot be moved left through other blocks", () => {});
   test.skip("Cannot be moved right through other blocks", () => {});
