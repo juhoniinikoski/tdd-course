@@ -159,6 +159,11 @@ export class Board implements Shape {
     this.tick();
   }
 
+  rotateRight() {
+    if (!this.hasFalling()) return;
+    // TODO
+  }
+
   toString() {
     let s = "";
     for (let row = 0; row < this.getHeight(); row++) {

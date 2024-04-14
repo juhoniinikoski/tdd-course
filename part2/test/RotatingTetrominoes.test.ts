@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
-import { ShapeType, Tetromino } from "../src/Tetromino";
+import { Tetromino } from "../src/Tetromino";
 
 function distinctOrientations(shape: Tetromino) {
   const distinct = new Set();
