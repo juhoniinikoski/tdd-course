@@ -28,34 +28,39 @@ export class Board implements Shape {
     this.fallingBlock = new Element(block, 0, Math.floor((this.width - block.getWidth()) / 2));
   }
 
-  getParts(y: number, x: number) {
-    if (this.fallingBlock) {
-      const points = Array.from(
-        { length: this.fallingBlock!.getHeight() * this.fallingBlock!.getWidth() },
-        (_, index) => {
-          const row = Math.floor(index / this.fallingBlock!.getWidth()) + y;
-          const col = (index % this.fallingBlock!.getWidth()) + x;
-          if (this.fallingBlock!.getBlock(row, col) !== ".") {
-            return [row, col];
-          }
-        }
-      ).filter((point) => point !== undefined);
+  getParts(element: Element) {
+    const coords = [];
+    const { x, y, shape } = element;
+    const height = shape.getHeight();
+    const width = shape.getWidth();
 
-      return points;
+    for (let row = y; row < y + height; row++) {
+      for (let col = x; col < x + width; col++) {
+        const block = element.getBlock(row, col);
+        if (block !== ".") {
+          coords.push([row, col]);
+        }
+      }
     }
 
-    return [];
+    return coords;
   }
 
   tick() {
     if (!this.hasFalling()) return;
 
     const newElement = this.fallingBlock!.move();
-    const newElementParts = this.getParts(newElement.y, newElement.x);
+    const parts = this.getParts(newElement);
 
     let hitBottom = false;
 
-    if (newElement.y === this.height || this.getBlock(newElement.y, this.fallingBlock!.x) !== ".") {
+    for (const part of parts) {
+      if (part[0] >= this.getHeight()) {
+        hitBottom = true;
+      }
+    }
+
+    if (hitBottom || this.getBlock(newElement.y, this.fallingBlock!.x) !== ".") {
       for (let row = 0; row < this.getHeight(); row++) {
         for (let col = 0; col < this.getWidth(); col++) {
           this.matrix[row][col] = this.getBlock(row, col) ?? ".";
