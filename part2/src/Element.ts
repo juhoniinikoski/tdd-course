@@ -39,7 +39,7 @@ export class Element implements Shape {
   }
 
   rotateLeft() {
-    return new Element(this.shape.rotateRight(), this.y, this.x);
+    return new Element(this.shape.rotateLeft(), this.y, this.x);
   }
 
   getBlock(y: number, x: number) {

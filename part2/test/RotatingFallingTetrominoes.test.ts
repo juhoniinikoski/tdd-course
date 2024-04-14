@@ -50,7 +50,35 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
-  test("Cannot be rotated when there is no room to rotate (T-shape) due to wall", () => {
+  test("Falling tetromino can be rotated left (T-shape)", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.rotateLeft();
+
+    expect(board.toString()).to.equalShape(
+      `....T.....
+       ...TT.....
+       ....T.....
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("Falling tetromino can be rotated left (I-shape)", () => {
+    board.drop(Tetromino.I_SHAPE);
+    board.rotateLeft();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ....I.....
+       ....I.....
+       ....I.....
+       ....I.....
+       ..........`
+    );
+  });
+
+  test("Cannot be rotated right when there is no room to rotate (T-shape) due to wall", () => {
     board.drop(Tetromino.T_SHAPE);
     board.rotateRight();
     board.rotateRight();
@@ -73,7 +101,7 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
-  test("Cannot be rotated when there is no room to rotate (I-shape) due to wall", () => {
+  test("Cannot be rotated right when there is no room to rotate (I-shape) due to wall", () => {
     board.drop(Tetromino.I_SHAPE);
     board.rotateRight();
     board.rotateRight();
@@ -96,7 +124,7 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
-  test("Cannot be rotated when there is no room to rotate (O-shape) due to wall", () => {
+  test("Cannot be rotated right when there is no room to rotate (O-shape) due to wall", () => {
     board.drop(Tetromino.O_SHAPE);
     board.rotateRight();
     board.rotateRight();
@@ -113,6 +141,26 @@ describe("Falling rotating tetrominoes", () => {
       `........OO
        ........OO
        ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("Cannot be rotated left when there is no room to rotate (T-shape) due to wall", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.rotateRight();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.rotateLeft();
+
+    expect(board.toString()).to.equalShape(
+      `T.........
+       TT........
+       T.........
        ..........
        ..........
        ..........`
