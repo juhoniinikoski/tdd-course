@@ -2,6 +2,12 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { Board } from "../src/Board";
 import { Tetromino } from "../src/Tetromino";
 
+function fallToBottom(board: Board) {
+  for (let i = 0; i < 10; i++) {
+    board.tick();
+  }
+}
+
 describe("Moving tetrominoes", () => {
   let board: Board;
   beforeEach(() => {
@@ -74,10 +80,9 @@ describe("Moving tetrominoes", () => {
 
   test("Cannot be moved left beyond the board", () => {
     board.drop(Tetromino.T_SHAPE);
-    board.moveLeft();
-    board.moveLeft();
-    board.moveLeft();
-    board.moveLeft();
+    for (let i = 0; i < 10; i++) {
+      board.moveLeft();
+    }
 
     expect(board.toString()).to.equalShape(
       `.T........
@@ -91,12 +96,9 @@ describe("Moving tetrominoes", () => {
 
   test("Cannot be moved right beyond the board", () => {
     board.drop(Tetromino.T_SHAPE);
-    board.moveRight();
-    board.moveRight();
-    board.moveRight();
-    board.moveRight();
-    board.moveRight();
-    board.moveRight();
+    for (let i = 0; i < 10; i++) {
+      board.moveRight();
+    }
 
     expect(board.toString()).to.equalShape(
       `........T.
@@ -107,8 +109,33 @@ describe("Moving tetrominoes", () => {
        ..........`
     );
   });
-  test.skip("Cannot be moved down beyond the board (will stop falling)", () => {});
-  test.skip("Cannot be moved left through other blocks", () => {});
+
+  test("Cannot be moved down beyond the board (will stop falling)", () => {
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 10; i++) {
+      board.moveLeft();
+      board.moveDown();
+    }
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 4; i++) {
+      board.moveDown();
+    }
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ..........
+       .T..T.....
+       TTTTTT....`
+    );
+  });
+
+  test("Cannot be moved left through other blocks", () => {});
+
   test.skip("Cannot be moved right through other blocks", () => {});
   test.skip("Cannot be moved down through other blocks (will stop falling)", () => {});
 });
