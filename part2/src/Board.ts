@@ -161,7 +161,8 @@ export class Board implements Shape {
 
   rotateRight() {
     if (!this.hasFalling()) return;
-    // TODO
+    const newElement = this.fallingBlock!.rotateRight();
+    this.fallingBlock = newElement;
   }
 
   toString() {

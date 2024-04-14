@@ -14,6 +14,17 @@ export interface Shape {
   getBlock(y: number, x: number): string | undefined;
 }
 
+export function shapeToString(shape: Shape) {
+  let s = "";
+  for (let row = 0; row < shape.getHeight(); row++) {
+    for (let col = 0; col < shape.getWidth(); col++) {
+      s += shape.getBlock(row, col);
+    }
+    s += "\n";
+  }
+  return s;
+}
+
 export class Tetromino implements Shape {
   currentOrientation;
   orientations;

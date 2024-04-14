@@ -1,12 +1,15 @@
-import { Shape } from "./Tetromino";
+import { RotatingShape } from "./RotatingShape";
+import { Shape, shapeToString } from "./Tetromino";
 
 export class Element implements Shape {
-  shape: Shape;
+  shape: RotatingShape;
   y: number;
   x: number;
 
   constructor(shape: Shape, y: number, x: number) {
-    this.shape = shape;
+    const shapeString = shapeToString(shape);
+
+    this.shape = RotatingShape.fromString(shapeString);
     this.y = y;
     this.x = x;
   }
@@ -29,6 +32,10 @@ export class Element implements Shape {
 
   getWidth() {
     return this.x + this.shape.getWidth();
+  }
+
+  rotateRight() {
+    return new Element(this.shape.rotateRight(), this.y - Math.floor(this.shape.getHeight() / 2), this.x);
   }
 
   getBlock(y: number, x: number) {
