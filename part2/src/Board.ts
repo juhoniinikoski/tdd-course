@@ -165,6 +165,7 @@ export class Board implements Shape {
     const parts = this.getParts(newElement);
 
     let hitRightWall = false;
+    let hitAnother = false;
     let stop = false;
 
     for (const part of parts) {
@@ -173,7 +174,13 @@ export class Board implements Shape {
       }
     }
 
-    stop = hitRightWall;
+    for (const part of parts) {
+      if (this.matrix[part[0]] && this.matrix[part[0]][part[1]] !== ".") {
+        hitAnother = true;
+      }
+    }
+
+    stop = hitRightWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;
   }

@@ -73,5 +73,84 @@ describe("Falling rotating tetrominoes", () => {
     );
   });
 
+  test("Cannot be rotated when there is no room to rotate (I-shape) due to wall", () => {
+    board.drop(Tetromino.I_SHAPE);
+    board.rotateRight();
+    board.rotateRight();
+    board.rotateRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       .........I
+       .........I
+       .........I
+       .........I
+       ..........`
+    );
+  });
+
+  test("Cannot be rotated when there is no room to rotate (O-shape) due to wall", () => {
+    board.drop(Tetromino.O_SHAPE);
+    board.rotateRight();
+    board.rotateRight();
+    board.rotateRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `........OO
+       ........OO
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("Cannot be rotated right when there is no room to rotate (T-shape) due to another element", () => {
+    board.drop(Tetromino.O_SHAPE);
+    board.moveRight();
+    board.moveRight();
+    board.moveRight();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+    board.moveDown();
+
+    board.drop(Tetromino.T_SHAPE);
+    board.tick();
+    board.rotateRight();
+    board.rotateRight();
+    board.rotateRight();
+    board.tick();
+    board.tick();
+    board.moveRight();
+    board.moveRight();
+    board.rotateRight();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ..........
+       ......T...
+       .....TTOO.
+       ......TOO.`
+    );
+  });
+
   test.skip("Performs wall kick");
 });
