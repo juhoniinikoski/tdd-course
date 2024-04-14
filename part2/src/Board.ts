@@ -102,17 +102,26 @@ export class Board implements Shape {
   }
 
   moveRight() {
-    if (this.hasFalling()) {
-      const newElement = this.fallingBlock?.moveRight();
-      this.fallingBlock = newElement;
-    }
+    if (!this.hasFalling()) return;
+
+    const newElement = this.fallingBlock!.moveRight();
+    this.fallingBlock = newElement;
   }
 
   moveLeft() {
-    if (this.hasFalling()) {
-      const newElement = this.fallingBlock?.moveLeft();
-      this.fallingBlock = newElement;
+    if (!this.hasFalling()) return;
+
+    const newElement = this.fallingBlock!.moveLeft();
+    const parts = this.getParts(newElement);
+
+    let hitLeftWall = false;
+
+    for (const part of parts) {
+      if (part[1] < 0) {
+        hitLeftWall = true;
+      }
     }
+    this.fallingBlock = hitLeftWall ? this.fallingBlock : newElement;
   }
 
   moveDown() {

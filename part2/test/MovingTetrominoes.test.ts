@@ -20,6 +20,17 @@ describe("Moving tetrominoes", () => {
        ..........
        ..........`
     );
+
+    board.moveLeft();
+
+    expect(board.toString()).to.equalShape(
+      `..T.......
+       .TTT......
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
   });
 
   test("Can be moved right", () => {
@@ -34,9 +45,50 @@ describe("Moving tetrominoes", () => {
        ..........
        ..........`
     );
+
+    board.moveRight();
+
+    expect(board.toString()).to.equalShape(
+      `......T...
+       .....TTT..
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
   });
-  test.skip("Can be moved down", () => {});
-  test.skip("Cannot be moved left beyond the board", () => {});
+
+  test("Can be moved down", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.moveDown();
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ....T.....
+       ...TTT....
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
+  test("Cannot be moved left beyond the board", () => {
+    board.drop(Tetromino.T_SHAPE);
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+    board.moveLeft();
+
+    expect(board.toString()).to.equalShape(
+      `.T........
+       TTT.......
+       ..........
+       ..........
+       ..........
+       ..........`
+    );
+  });
+
   test.skip("Cannot be moved right beyond the board", () => {});
   test.skip("Cannot be moved down beyond the board (will stop falling)", () => {});
   test.skip("Cannot be moved left through other blocks", () => {});
