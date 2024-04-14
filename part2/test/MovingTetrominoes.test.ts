@@ -167,5 +167,25 @@ describe("Moving tetrominoes", () => {
        ....TTTTTT`
     );
   });
-  test.skip("Cannot be moved down through other blocks (will stop falling)", () => {});
+
+  test("Cannot be moved down through other blocks (will stop falling)", () => {
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 10; i++) {
+      board.moveDown();
+    }
+
+    board.drop(Tetromino.T_SHAPE);
+    for (let i = 0; i < 10; i++) {
+      board.moveDown();
+    }
+
+    expect(board.toString()).to.equalShape(
+      `..........
+       ..........
+       ....T.....
+       ...TTT....
+       ....T.....
+       ...TTT....`
+    );
+  });
 });
