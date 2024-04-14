@@ -151,6 +151,12 @@ export class Board implements Shape {
     const hitRightWall = this.checkWalls(newElement);
     const hitAnother = this.checkAnotherElements(newElement);
 
+    if (hitRightWall) {
+      const newElement2 = this.fallingBlock!.moveLeft().rotateRight();
+      this.fallingBlock = newElement2;
+      return;
+    }
+
     const stop = hitRightWall || hitAnother;
 
     this.fallingBlock = stop ? this.fallingBlock : newElement;

@@ -31,7 +31,7 @@
   "scripts": {
     "start": "http-server src -o / -c-1",
     "test": "vitest run",
-    "autotest": "vitest watch",
+    "autotest": "vitest",
     "format": "prettier --write .",
     "lint": "tsc"
   }
