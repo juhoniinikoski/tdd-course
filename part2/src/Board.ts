@@ -101,6 +101,10 @@ export class Board implements Shape {
     return this.matrix[row][col];
   }
 
+  moveRight() {
+    // TODO
+  }
+
   toString() {
     let s = "";
     for (let row = 0; row < this.getHeight(); row++) {
