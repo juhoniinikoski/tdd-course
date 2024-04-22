@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import { parse } from "csv-parse/sync";
 
+// From the course material:
+
+// The file system is a global variable which persists between test executions.
+// If a test needs to write to the disk, create a unique temporary directory on test setup
+// and delete it recursively on teardown.
 export async function parsePeopleCsv(filePath) {
   const csvData = await readFile(filePath, { encoding: "utf8" });
   const records = parse(csvData, {
