@@ -151,11 +151,10 @@ export class Board implements Shape {
     let hitRightWall = this.checkWalls(newElement);
     let hitAnother = this.checkAnotherElements(newElement);
 
-    while (hitRightWall) {
+    if (hitRightWall || hitAnother) {
       const newElement2 = this.fallingBlock!.moveLeft().rotateRight();
-      hitRightWall = this.checkWalls(newElement2);
       let hitAnother = this.checkAnotherElements(newElement2);
-      if (!hitRightWall && !hitAnother) {
+      if (!hitAnother) {
         this.fallingBlock = newElement2;
       }
     }
@@ -172,11 +171,10 @@ export class Board implements Shape {
     let hitLeftWall = this.checkWalls(newElement);
     let hitAnother = this.checkAnotherElements(newElement);
 
-    while (hitLeftWall) {
+    if (hitLeftWall || hitAnother) {
       const newElement2 = this.fallingBlock!.moveRight().rotateLeft();
-      hitLeftWall = this.checkWalls(newElement2);
       let hitAnother = this.checkAnotherElements(newElement2);
-      if (!hitLeftWall && !hitAnother) {
+      if (!hitAnother) {
         this.fallingBlock = newElement2;
       }
     }
