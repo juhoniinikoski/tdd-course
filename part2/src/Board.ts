@@ -21,7 +21,7 @@ export class Board implements Shape {
     const parts = this.getParts(element);
 
     for (const part of parts) {
-      if (part[0] >= this.getHeight() || part[1] >= this.getWidth()) {
+      if (part[0] >= this.getHeight() || part[1] >= this.getWidth() || part[0] < 0 || part[1] < 0) {
         return true;
       }
     }
@@ -148,13 +148,16 @@ export class Board implements Shape {
     if (!this.hasFalling()) return;
     const newElement = this.fallingBlock!.rotateRight();
 
-    const hitRightWall = this.checkWalls(newElement);
-    const hitAnother = this.checkAnotherElements(newElement);
+    let hitRightWall = this.checkWalls(newElement);
+    let hitAnother = this.checkAnotherElements(newElement);
 
-    if (hitRightWall) {
+    while (hitRightWall) {
       const newElement2 = this.fallingBlock!.moveLeft().rotateRight();
-      this.fallingBlock = newElement2;
-      return;
+      hitRightWall = this.checkWalls(newElement2);
+      let hitAnother = this.checkAnotherElements(newElement2);
+      if (!hitRightWall && !hitAnother) {
+        this.fallingBlock = newElement2;
+      }
     }
 
     const stop = hitRightWall || hitAnother;
@@ -168,6 +171,15 @@ export class Board implements Shape {
 
     let hitLeftWall = this.checkWalls(newElement);
     let hitAnother = this.checkAnotherElements(newElement);
+
+    while (hitLeftWall) {
+      const newElement2 = this.fallingBlock!.moveRight().rotateLeft();
+      hitLeftWall = this.checkWalls(newElement2);
+      let hitAnother = this.checkAnotherElements(newElement2);
+      if (!hitLeftWall && !hitAnother) {
+        this.fallingBlock = newElement2;
+      }
+    }
 
     const stop = hitLeftWall || hitAnother;
 
