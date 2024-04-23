@@ -30,13 +30,10 @@ describe("parsePeopleCsv function", () => {
     const csvContent = `John,Doe,30,Male\nJane,Doe,25,Female`;
     const csvFilePath = join(tempDir, "test.csv");
 
-    // Write the CSV file
     await writeCsvFile(csvFilePath, csvContent);
 
-    // Call the parsePeopleCsv function
     const records = await parsePeopleCsv(csvFilePath);
 
-    // Assert the parsed records
     expect(records).toEqual([
       { firstName: "John", lastName: "Doe", age: 30, gender: "m" },
       { firstName: "Jane", lastName: "Doe", age: 25, gender: "f" },
