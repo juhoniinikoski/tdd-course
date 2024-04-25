@@ -5,13 +5,20 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch index.mjs",
-    "test": "vitest"
+    "test": "vitest",
+    "db:push": "drizzle-kit push:pg --config=drizzle.config.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.9",
     "express": "^4.19.2",
+    "pg": "^8.11.5",
     "vitest": "^1.5.2"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.17"
   }
 }

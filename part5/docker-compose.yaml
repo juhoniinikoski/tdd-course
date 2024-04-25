@@ -27,6 +27,7 @@ services:
   db:
     image: postgres:13
     environment:
+      POSTGRES_DB: db
       POSTGRES_USER: webapp
       POSTGRES_PASSWORD: secret
     mem_reservation: 100m
