@@ -203,4 +203,81 @@ describe("Gilded Rose", () => {
     shop.updateQuality();
     expect(shop.items[0].quality).toBe(0);
   });
+
+  test('should increase quality for "Aged Brie" items as they age', () => {
+    const items = [new Item("Aged Brie", 5, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(11);
+  });
+
+  test('should not increase quality above 50 for "Aged Brie" items', () => {
+    const items = [new Item("Aged Brie", 5, 50)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(50);
+  });
+
+  test('should increase quality for "Backstage passes" items as sellIn approaches', () => {
+    const items = [new Item("Backstage passes to a TAFKAL80ETC concert", 12, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(11);
+  });
+
+  test('should increase quality by 2 for "Backstage passes" items when there are 10 days or less left', () => {
+    const items = [new Item("Backstage passes to a TAFKAL80ETC concert", 10, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(12);
+  });
+
+  test('should increase quality by 3 for "Backstage passes" items when there are 5 days or less left', () => {
+    const items = [new Item("Backstage passes to a TAFKAL80ETC concert", 5, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(13);
+  });
+
+  test('should drop quality to 0 for "Backstage passes" items after the concert', () => {
+    const items = [new Item("Backstage passes to a TAFKAL80ETC concert", 0, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(0);
+  });
+
+  test('should not alter quality for "Sulfuras" items', () => {
+    const items = [new Item("Sulfuras, Hand of Ragnaros", 5, 80)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(80);
+  });
+
+  test('should decrease quality twice as fast for "Conjured" items', () => {
+    const items = [new Item("Conjured", 5, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(8);
+  });
+
+  test('should not decrease quality below 0 for "Conjured" items', () => {
+    const items = [new Item("Conjured", 5, 1)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(0);
+  });
+
+  test('should decrease quality twice as fast for "Conjured" items after sell by date', () => {
+    const items = [new Item("Conjured", -1, 10)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(6);
+  });
+
+  test('should maintain quality of 80 for "Sulfuras" items', () => {
+    const items = [new Item("Sulfuras, Hand of Ragnaros", 5, 80)];
+    const shop = new Shop(items);
+    shop.updateQuality();
+    expect(shop.items[0].quality).toBe(80);
+  });
 });
