@@ -1,21 +1,65 @@
+import { task } from "./task.sql.mjs";
+import { createId } from "@paralleldrive/cuid2";
+import { db } from "../utils/db.mjs";
+import { eq } from "drizzle-orm";
+
 export * as Task from "./task";
 
-export function create(title) {
-  throw new Error("Not implemented");
+export async function create(title) {
+  const newTask = { id: createId(), title, completed: false, archived: false };
+  const result = await db.insert(task).values(newTask).returning();
+  return result;
 }
 
-export function list() {
-  throw new Error("Not implemented");
+export async function list() {
+  const result = await db.select().from(task).execute();
+  return result;
 }
 
-export function rename(taskID, title) {
-  throw new Error("Not implemented");
+export async function rename(taskID, title) {
+  const result = await db
+    .update(task)
+    .set({
+      title,
+    })
+    .where(eq(task.id, taskID))
+    .returning();
+
+  if (!result.length) {
+    throw new Error("Task with given id is not found.");
+  }
+
+  return result;
 }
 
-export function complete(taskID) {
-  throw new Error("Not implemented");
+export async function complete(taskID) {
+  const result = await db
+    .update(task)
+    .set({
+      completed: true,
+    })
+    .where(eq(task.id, taskID))
+    .returning();
+
+  if (!result.length) {
+    throw new Error("Task with given id is not found.");
+  }
+
+  return result;
 }
 
-export function archive() {
-  throw new Error("Not implemented");
+export async function archive(taskID) {
+  const result = await db
+    .update(task)
+    .set({
+      archived: true,
+    })
+    .where(eq(task.id, taskID))
+    .returning();
+
+  if (!result.length) {
+    throw new Error("Task with given id is not found.");
+  }
+
+  return result;
 }
