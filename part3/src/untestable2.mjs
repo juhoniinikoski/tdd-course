@@ -2,7 +2,7 @@ export function diceRoll(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Randomness is impossible test so we pass the roll function
+// randomness is impossible test so we pass the roll function
 // as a prop and mock it in the tests.
 export function diceHandValue(rollFunction) {
   const die1 = rollFunction(1, 6);

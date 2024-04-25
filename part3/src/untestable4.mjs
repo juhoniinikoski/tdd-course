@@ -1,5 +1,10 @@
 import argon2 from "@node-rs/argon2";
 
+// refactored code to embrace dependency injection pattern
+// which makes individual layers of the application more testable.
+// in practice, here we give database as an input for PostgresUserDao object
+// and the we give userdao as a prop for password service.
+// this pattern
 export class PostgresUserDao {
   constructor(db) {
     this.db = db;
