@@ -5,6 +5,9 @@ WORKDIR /app/
 COPY package.json /app
 RUN npm install
 
-COPY /src /app
+COPY /src /app/src
+COPY /tsconfig.json /app
 
-ENTRYPOINT ["node", "index.mjs"]
+RUN npm run build
+
+ENTRYPOINT ["node", "dist/src/index.js"]

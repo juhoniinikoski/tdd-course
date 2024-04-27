@@ -1,7 +1,7 @@
 import { describe, it, beforeEach, expect } from "vitest";
-import { db } from "../utils/db.mjs";
-import { task } from "./task.sql.mjs";
-import { Task } from "./task.mjs";
+import { db } from "../utils/db";
+import { task } from "./task.sql";
+import { Task } from "./task.js";
 import { createId } from "@paralleldrive/cuid2";
 
 const mockTasks = [
@@ -21,9 +21,9 @@ describe("create", () => {
     const result = await db.select().from(task).execute();
     const resultItem = result.find((item) => item.title === "task123");
 
-    expect(resultItem.title).toEqual("task123");
-    expect(resultItem.completed).toEqual(false);
-    expect(resultItem.archived).toEqual(false);
+    expect(resultItem!.title).toEqual("task123");
+    expect(resultItem!.completed).toEqual(false);
+    expect(resultItem!.archived).toEqual(false);
   });
 });
 
@@ -73,12 +73,12 @@ describe("complete", () => {
 
   it("completes task successfully", async () => {
     const initial = await db.select().from(task).execute();
-    expect(initial.find((i) => i.id === mockTasks[0].id).completed).toEqual(false);
+    expect(initial.find((i) => i.id === mockTasks[0].id)!.completed).toEqual(false);
 
     await Task.complete(mockTasks[0].id);
 
     const result = await db.select().from(task).execute();
-    expect(result.find((i) => i.id === mockTasks[0].id).completed).toEqual(true);
+    expect(result.find((i) => i.id === mockTasks[0].id)!.completed).toEqual(true);
   });
 
   it("throws an error if no task with given id is found", async () => {
@@ -94,12 +94,12 @@ describe("archive", () => {
 
   it("archives task succesfully", async () => {
     const initial = await db.select().from(task).execute();
-    expect(initial.find((i) => i.id === mockTasks[0].id).archived).toEqual(false);
+    expect(initial.find((i) => i.id === mockTasks[0].id)!.archived).toEqual(false);
 
     await Task.archive(mockTasks[0].id);
 
     const result = await db.select().from(task).execute();
-    expect(result.find((i) => i.id === mockTasks[0].id).archived).toEqual(true);
+    expect(result.find((i) => i.id === mockTasks[0].id)!.archived).toEqual(true);
   });
 
   it("throws an error if task with given id is not found", async () => {

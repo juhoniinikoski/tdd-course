@@ -1,22 +1,29 @@
-import { task } from "./task.sql.mjs";
+import { task } from "./task.sql";
 import { createId } from "@paralleldrive/cuid2";
-import { db } from "../utils/db.mjs";
+import { db } from "../utils/db.js";
 import { eq } from "drizzle-orm";
 
 export * as Task from "./task";
 
-export async function create(title) {
-  const newTask = { id: createId(), title, completed: false, archived: false };
-  const result = await db.insert(task).values(newTask).returning();
-  return result;
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+  archived: boolean;
 }
 
-export async function list() {
+export async function create(title: string): Promise<Task> {
+  const newTask = { id: createId(), title, completed: false, archived: false };
+  const result = await db.insert(task).values(newTask).returning();
+  return result[0];
+}
+
+export async function list(): Promise<Task[]> {
   const result = await db.select().from(task).execute();
   return result;
 }
 
-export async function rename(taskID, title) {
+export async function rename(taskID: string, title: string): Promise<Task> {
   const result = await db
     .update(task)
     .set({
@@ -29,10 +36,10 @@ export async function rename(taskID, title) {
     throw new Error("Task with given id is not found.");
   }
 
-  return result;
+  return result[0];
 }
 
-export async function complete(taskID) {
+export async function complete(taskID: string): Promise<Task> {
   const result = await db
     .update(task)
     .set({
@@ -45,10 +52,10 @@ export async function complete(taskID) {
     throw new Error("Task with given id is not found.");
   }
 
-  return result;
+  return result[0];
 }
 
-export async function archive(taskID) {
+export async function archive(taskID: string): Promise<Task> {
   const result = await db
     .update(task)
     .set({
@@ -61,5 +68,5 @@ export async function archive(taskID) {
     throw new Error("Task with given id is not found.");
   }
 
-  return result;
+  return result[0];
 }
