@@ -1,7 +1,9 @@
 import * as React from "react";
+import { Icons } from "./icons";
+import { toast } from "react-hot-toast";
 
 interface TaskInputProps {
-  handleSubmit: (taskTitle: string) => Promise<void>;
+  handleSubmit: (taskTitle: string) => Promise<{ status: "ok" | "error" }>;
 }
 
 export function TaskInput({ handleSubmit }: TaskInputProps) {
@@ -11,7 +13,13 @@ export function TaskInput({ handleSubmit }: TaskInputProps) {
     <form
       onSubmit={async (event) => {
         event.preventDefault();
-        await handleSubmit(task);
+        const { status } = await handleSubmit(task);
+        if (status === "ok") {
+          setTask("");
+          toast.success("New task created");
+        } else {
+          toast.success("Error creating new task");
+        }
       }}
       className="input-row"
     >
@@ -19,9 +27,10 @@ export function TaskInput({ handleSubmit }: TaskInputProps) {
         aria-label="task-input"
         value={task}
         onChange={(event) => setTask(event.target.value)}
-        placeholder="Do the dishes..."
+        placeholder="I am a placeholder..."
       ></input>
       <button disabled={task.length === 0} aria-label="task-submit-button" type="submit">
+        <Icons.add className="icon-left" />
         Add task
       </button>
     </form>
