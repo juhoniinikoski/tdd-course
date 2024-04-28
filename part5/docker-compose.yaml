@@ -1,16 +1,16 @@
 version: "2"
 services:
-  web:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-    image: webapp-frontend
-    environment:
-      API_URL: http://api:80
-    mem_reservation: 10m
-    mem_limit: 20m
-    ports:
-      - "127.0.0.1:8080:80"
+  # web:
+  #   build:
+  #     context: frontend
+  #     dockerfile: Dockerfile
+  #   image: webapp-frontend
+  #   environment:
+  #     API_URL: http://api:80
+  #   mem_reservation: 10m
+  #   mem_limit: 20m
+  #   ports:
+  #     - "127.0.0.1:8080:80"
 
   api:
     build:
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     image: webapp-backend
     environment:
-      DATABASE_URL: postgresql://webapp:secret@localhost:5432/db
+      DATABASE_URL: postgresql://webapp:secret@db:5432/db
     mem_reservation: 100m
     mem_limit: 200m
     ports:
@@ -27,6 +27,7 @@ services:
   db:
     image: postgres:13
     environment:
+      POSTGRES_HOST: db
       POSTGRES_DB: db
       POSTGRES_USER: webapp
       POSTGRES_PASSWORD: secret

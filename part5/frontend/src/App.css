@@ -37,6 +37,7 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
+.input-row {
+  display: flex;
+  gap: 0.5em;
 }

@@ -1,6 +1,6 @@
 import { task } from "./task.sql";
 import { createId } from "@paralleldrive/cuid2";
-import { db } from "../utils/db.js";
+import { db } from "../utils/db";
 import { eq } from "drizzle-orm";
 
 export * as Task from "./task";

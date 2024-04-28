@@ -1,11 +1,9 @@
 import express from "express";
 import { z } from "zod";
 import { Task } from "./domain/task";
+import cors from "cors";
 
 const PORT = 80;
-
-export const app = express();
-app.use(express.json());
 
 const CreateTaskSchema = z.object({
   title: z.string(),
@@ -19,6 +17,10 @@ const RenameTaskSchema = z.object({
 const ArchiveTaskSchema = z.object({
   taskID: z.string(),
 });
+
+export const app = express();
+app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello from backend");
