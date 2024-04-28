@@ -6,4 +6,5 @@ export type Icon = LucideIcon;
 export const Icons = {
   add: Lucide.Plus,
   archive: Lucide.Archive,
+  edit: Lucide.Pencil,
 };

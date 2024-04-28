@@ -7,6 +7,7 @@ const mockHandleSubmit = vi.fn();
 describe("task input", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    mockHandleSubmit.mockReturnValue(() => Promise.resolve({ status: "ok" }));
   });
 
   it("persists the value to state correctly", () => {

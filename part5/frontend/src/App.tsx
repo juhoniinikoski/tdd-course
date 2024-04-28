@@ -38,7 +38,7 @@ function App() {
     };
   }, []);
 
-  const handleSubmit = async (taskTitle: string): Promise<{ status: "ok" | "error"; error?: string }> => {
+  const handleSubmit = async (taskTitle: string): Promise<{ status: "ok" | "error" }> => {
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -68,6 +68,58 @@ function App() {
     }
   };
 
+  const handleArchive = async (taskID: string): Promise<{ status: "ok" | "error" }> => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    try {
+      const response = await fetch(`/api/tasks/archive`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ taskID }),
+        signal: signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to archive task: ${response.statusText}`);
+      }
+
+      return { status: "ok" };
+    } catch (error) {
+      return { status: "error" };
+    } finally {
+      controller.abort();
+    }
+  };
+
+  const handleRename = async (taskID: string, newTitle: string): Promise<{ status: "ok" | "error" }> => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    try {
+      const response = await fetch(`/api/tasks/rename`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ taskID, newTitle }),
+        signal: signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to rename task: ${response.statusText}`);
+      }
+
+      return { status: "ok" };
+    } catch (error) {
+      return { status: "error" };
+    } finally {
+      controller.abort();
+    }
+  };
+
   if (loading) {
     return <></>;
   }
@@ -79,7 +131,7 @@ function App() {
         <TaskInput handleSubmit={handleSubmit} />
         <div className="task-container">
           {tasks.map((t) => (
-            <TaskRow key={t.id} task={t} />
+            <TaskRow key={t.id} task={t} handleArchive={handleArchive} handleRename={handleRename} />
           ))}
         </div>
       </div>
