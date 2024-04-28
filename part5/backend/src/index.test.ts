@@ -33,7 +33,7 @@ vi.mock("./domain/task", () => {
 describe("get tasks", () => {
   it("calls task domain function successfully and returns list of tasks with statuscode 200", async () => {
     mockList.mockImplementationOnce(() => Promise.resolve(mockTasks[0]));
-    const res = await api.get("/tasks");
+    const res = await api.get("/api/tasks");
     expect(mockList).toBeCalledTimes(1);
     expect(res.status).toEqual(200);
   });
@@ -42,13 +42,13 @@ describe("get tasks", () => {
 describe("create task", () => {
   it("calls task domain function successfully and returns the created task with statuscode 200", async () => {
     mockCreate.mockImplementationOnce(() => Promise.resolve(mockTasks[0]));
-    const res = await api.post("/tasks").send({ title: "test-title" });
+    const res = await api.post("/api/tasks").send({ title: "test-title" });
     expect(mockCreate).toBeCalledTimes(1);
     expect(res.status).toEqual(200);
   });
 
   it("returns 400 if user inputs invalid body", async () => {
-    const res = await api.post("/tasks").send({ test: "unknown-key" });
+    const res = await api.post("/api/tasks").send({ test: "unknown-key" });
     expect(res.status).toEqual(400);
   });
 });
@@ -56,13 +56,13 @@ describe("create task", () => {
 describe("rename task", () => {
   it("calls task domain function successfully and returns the renamed task with statuscode 200", async () => {
     mockRename.mockImplementationOnce(() => Promise.resolve(mockTasks[0]));
-    const res = await api.put("/tasks/rename").send({ taskID: mockTasks[0].id, newTitle: "test-title" });
+    const res = await api.put("/api/tasks/rename").send({ taskID: mockTasks[0].id, newTitle: "test-title" });
     expect(mockRename).toBeCalledTimes(1);
     expect(res.status).toEqual(200);
   });
 
   it("returns 400 if user inputs invalid body", async () => {
-    const res = await api.put("/tasks/rename").send({ test: "unknown-key" });
+    const res = await api.put("/api/tasks/rename").send({ test: "unknown-key" });
     expect(res.status).toEqual(400);
   });
 });
@@ -70,13 +70,13 @@ describe("rename task", () => {
 describe("archive task", () => {
   it("calls task domain function successfully and returns the archived task with statuscode 200", async () => {
     mockArchive.mockImplementationOnce(() => Promise.resolve(mockTasks[0]));
-    const res = await api.put("/tasks/archive").send({ taskID: mockTasks[0].id });
+    const res = await api.put("/api/tasks/archive").send({ taskID: mockTasks[0].id });
     expect(mockArchive).toBeCalledTimes(1);
     expect(res.status).toEqual(200);
   });
 
   it("returns 400 if user inputs invalid body", async () => {
-    const res = await api.put("/tasks/archive").send({ test: "unknown-key" });
+    const res = await api.put("/api/tasks/archive").send({ test: "unknown-key" });
     expect(res.status).toEqual(400);
   });
 });

@@ -22,16 +22,16 @@ export const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello from backend");
 });
 
-app.get("/tasks", async (req, res) => {
+app.get("/api/tasks", async (req, res) => {
   const result = await Task.list();
   return res.json(result);
 });
 
-app.post("/tasks", async (req, res) => {
+app.post("/api/tasks", async (req, res) => {
   try {
     const { title } = CreateTaskSchema.parse(req.body);
     const result = await Task.create(title);
@@ -41,7 +41,7 @@ app.post("/tasks", async (req, res) => {
   }
 });
 
-app.put("/tasks/rename", async (req, res) => {
+app.put("/api/tasks/rename", async (req, res) => {
   try {
     const { taskID, newTitle } = RenameTaskSchema.parse(req.body);
     const result = await Task.rename(taskID, newTitle);
@@ -51,7 +51,7 @@ app.put("/tasks/rename", async (req, res) => {
   }
 });
 
-app.put("/tasks/archive", async (req, res) => {
+app.put("/api/tasks/archive", async (req, res) => {
   try {
     const { taskID } = ArchiveTaskSchema.parse(req.body);
     const result = await Task.archive(taskID);
