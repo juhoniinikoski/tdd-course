@@ -23,11 +23,7 @@ function App() {
         setLoading(false);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        if (error.name === "AbortError") {
-          console.log("Fetch aborted");
-        } else {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
@@ -68,6 +64,63 @@ function App() {
     }
   };
 
+  const handleComplete = async (taskID: string): Promise<{ status: "ok" | "error" }> => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    try {
+      const response = await fetch(`/api/tasks/complete`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ taskID }),
+        signal: signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to complete task: ${response.statusText}`);
+      }
+
+      setTasks((oldTasks) => oldTasks.map((t) => (t.id === taskID ? { ...t, completed: !t.completed } : t)));
+
+      return { status: "ok" };
+    } catch (error) {
+      return { status: "error" };
+    } finally {
+      controller.abort();
+    }
+  };
+
+  const handleArchiveCompleted = async (): Promise<{ status: "ok" | "error" }> => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    try {
+      const response = await fetch(`/api/tasks/archive-completed`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to archive tasks: ${response.statusText}`);
+      }
+
+      setTasks((oldTasks) =>
+        oldTasks.map((t) => (t.archived === false && t.completed === true ? { ...t, archived: true } : t)),
+      );
+
+      return { status: "ok" };
+    } catch (error) {
+      return { status: "error" };
+    } finally {
+      controller.abort();
+    }
+  };
+
   const handleArchive = async (taskID: string): Promise<{ status: "ok" | "error" }> => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -86,6 +139,8 @@ function App() {
         throw new Error(`Failed to archive task: ${response.statusText}`);
       }
 
+      setTasks((oldTasks) => oldTasks.map((t) => (t.id === taskID ? { ...t, archived: true } : t)));
+
       return { status: "ok" };
     } catch (error) {
       return { status: "error" };
@@ -100,7 +155,7 @@ function App() {
 
     try {
       const response = await fetch(`/api/tasks/rename`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -111,6 +166,8 @@ function App() {
       if (!response.ok) {
         throw new Error(`Failed to rename task: ${response.statusText}`);
       }
+
+      setTasks((oldTasks) => oldTasks.map((t) => (t.id === taskID ? { ...t, title: newTitle } : t)));
 
       return { status: "ok" };
     } catch (error) {
@@ -124,16 +181,45 @@ function App() {
     return <></>;
   }
 
+  const nonArchivedTasks = tasks.filter((task) => !task.archived);
+  const archivedTasks = tasks.filter((task) => task.archived);
+
   return (
     <>
       <h1>My todo app</h1>
       <div className="card">
-        <TaskInput handleSubmit={handleSubmit} />
+        <TaskInput
+          allTasks={nonArchivedTasks}
+          handleArchiveCompleted={handleArchiveCompleted}
+          handleSubmit={handleSubmit}
+        />
         <div className="task-container">
-          {tasks.map((t) => (
-            <TaskRow key={t.id} task={t} handleArchive={handleArchive} handleRename={handleRename} />
+          {nonArchivedTasks.map((t) => (
+            <TaskRow
+              key={t.id}
+              task={t}
+              handleArchive={handleArchive}
+              handleRename={handleRename}
+              handleComplete={handleComplete}
+            />
           ))}
         </div>
+        {archivedTasks.length !== 0 && (
+          <>
+            <p>Archived:</p>
+            <div className="task-container">
+              {archivedTasks.map((t) => (
+                <TaskRow
+                  key={t.id}
+                  task={t}
+                  handleArchive={handleArchive}
+                  handleRename={handleRename}
+                  handleComplete={handleComplete}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

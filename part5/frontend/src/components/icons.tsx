@@ -7,4 +7,8 @@ export const Icons = {
   add: Lucide.Plus,
   archive: Lucide.Archive,
   edit: Lucide.Pencil,
+  check: Lucide.Check,
+  circleCheck: Lucide.CircleCheck,
+  circle: Lucide.Circle,
+  close: Lucide.X,
 };
