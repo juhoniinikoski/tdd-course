@@ -71,7 +71,7 @@ describe("complete", () => {
     await db.insert(task).values(mockTasks).execute();
   });
 
-  it("completes task successfully", async () => {
+  it("completes task successfully and uncompletes it as well", async () => {
     const initial = await db.select().from(task).execute();
     expect(initial.find((i) => i.id === mockTasks[0].id)!.completed).toEqual(false);
 
@@ -79,6 +79,11 @@ describe("complete", () => {
 
     const result = await db.select().from(task).execute();
     expect(result.find((i) => i.id === mockTasks[0].id)!.completed).toEqual(true);
+
+    await Task.complete(mockTasks[0].id);
+
+    const newResult = await db.select().from(task).execute();
+    expect(newResult.find((i) => i.id === mockTasks[0].id)!.completed).toEqual(false);
   });
 
   it("throws an error if no task with given id is found", async () => {
@@ -104,5 +109,35 @@ describe("archive", () => {
 
   it("throws an error if task with given id is not found", async () => {
     await expect(Task.archive("testtest")).rejects.toThrowError("Task with given id is not found.");
+  });
+});
+
+describe("archives all completed", () => {
+  beforeEach(async () => {
+    await db.delete(task).execute();
+    await db
+      .insert(task)
+      .values(mockTasks.map((t) => ({ ...t, completed: true })))
+      .execute();
+  });
+
+  it("archives task succesfully", async () => {
+    const initial = await db.select().from(task).execute();
+    expect(initial.filter((i) => i.completed).length).toEqual(mockTasks.length);
+    expect(initial.filter((i) => i.archived).length).toEqual(0);
+
+    await Task.archiveCompleted();
+
+    const result = await db.select().from(task).execute();
+    expect(result.filter((i) => i.completed).length).toEqual(mockTasks.length);
+    expect(result.filter((i) => i.archived).length).toEqual(mockTasks.length);
+  });
+
+  it("won't archive any items if there are no items that are completed but not archived", async () => {
+    const initial = await Task.archiveCompleted();
+    expect(initial.length).toEqual(mockTasks.length);
+
+    const result = await Task.archiveCompleted();
+    expect(result.length).toEqual(0);
   });
 });

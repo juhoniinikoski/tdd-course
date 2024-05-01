@@ -18,6 +18,10 @@ const ArchiveTaskSchema = z.object({
   taskID: z.string(),
 });
 
+const CompleteTaskSchema = z.object({
+  taskID: z.string(),
+});
+
 export const app = express();
 app.use(express.json());
 app.use(cors());
@@ -58,6 +62,25 @@ app.put("/api/tasks/archive", async (req, res) => {
     res.json(result);
   } catch (error) {
     res.status(400).json({ error: "Validation failed" });
+  }
+});
+
+app.put("/api/tasks/complete", async (req, res) => {
+  try {
+    const { taskID } = CompleteTaskSchema.parse(req.body);
+    const result = await Task.complete(taskID);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: "Validation failed" });
+  }
+});
+
+app.put("/api/tasks/archive-completed", async (req, res) => {
+  try {
+    const result = await Task.archiveCompleted();
+    res.json(result);
+  } catch (error) {
+    res.status(400).send();
   }
 });
 

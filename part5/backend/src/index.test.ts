@@ -10,12 +10,14 @@ const mockTasks = [
   { id: createId(), title: "task2", completed: false, archived: false },
 ];
 
-const { mockCreate, mockRename, mockList, mockArchive } = vi.hoisted(() => {
+const { mockCreate, mockRename, mockList, mockArchive, mockComplete, mockArchiveCompleted } = vi.hoisted(() => {
   return {
     mockCreate: vi.fn(),
     mockRename: vi.fn(),
     mockList: vi.fn(),
     mockArchive: vi.fn(),
+    mockComplete: vi.fn(),
+    mockArchiveCompleted: vi.fn(),
   };
 });
 
@@ -26,6 +28,8 @@ vi.mock("./domain/task", () => {
       rename: mockRename,
       list: mockList,
       archive: mockArchive,
+      complete: mockComplete,
+      archiveCompleted: mockArchiveCompleted,
     },
   };
 });
@@ -78,5 +82,28 @@ describe("archive task", () => {
   it("returns 400 if user inputs invalid body", async () => {
     const res = await api.put("/api/tasks/archive").send({ test: "unknown-key" });
     expect(res.status).toEqual(400);
+  });
+});
+
+describe("complete task", () => {
+  it("calls task domain function successfully and returns the completed task with statuscode 200", async () => {
+    mockComplete.mockImplementationOnce(() => Promise.resolve(mockTasks[0]));
+    const res = await api.put("/api/tasks/complete").send({ taskID: mockTasks[0].id });
+    expect(mockComplete).toBeCalledTimes(1);
+    expect(res.status).toEqual(200);
+  });
+
+  it("returns 400 if user inputs invalid body", async () => {
+    const res = await api.put("/api/tasks/complete").send({ test: "unknown-key" });
+    expect(res.status).toEqual(400);
+  });
+});
+
+describe("archive all completed task", () => {
+  it("calls task domain function successfully and returns the archived tasks with statuscode 200", async () => {
+    mockArchiveCompleted.mockImplementationOnce(() => Promise.resolve(mockTasks));
+    const res = await api.put("/api/tasks/archive-completed");
+    expect(mockArchiveCompleted).toBeCalledTimes(1);
+    expect(res.status).toEqual(200);
   });
 });
