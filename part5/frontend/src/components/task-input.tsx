@@ -22,7 +22,7 @@ export function TaskInput({ allTasks, handleSubmit, handleArchiveCompleted }: Ta
             setTask("");
             toast.success("New task created");
           } else {
-            toast.success("Error creating new task");
+            toast.error("Error creating new task");
           }
         }}
         className="input-row"

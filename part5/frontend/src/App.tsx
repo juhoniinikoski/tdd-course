@@ -8,13 +8,17 @@ function App() {
   const [tasks, setTasks] = React.useState<Task[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
 
+  const apiUrl = import.meta.env.VITE_API_URL ?? "";
+
+  console.log(import.meta.env);
+
   React.useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/tasks`, { signal });
+        const response = await fetch(`${apiUrl}/api/tasks`, { signal });
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
@@ -32,14 +36,14 @@ function App() {
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [apiUrl]);
 
   const handleSubmit = async (taskTitle: string): Promise<{ status: "ok" | "error" }> => {
     const controller = new AbortController();
     const signal = controller.signal;
 
     try {
-      const response = await fetch(`/api/tasks`, {
+      const response = await fetch(`${apiUrl}/api/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +73,7 @@ function App() {
     const signal = controller.signal;
 
     try {
-      const response = await fetch(`/api/tasks/complete`, {
+      const response = await fetch(`${apiUrl}/api/tasks/complete`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +101,7 @@ function App() {
     const signal = controller.signal;
 
     try {
-      const response = await fetch(`/api/tasks/archive-completed`, {
+      const response = await fetch(`${apiUrl}/api/tasks/archive-completed`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +130,7 @@ function App() {
     const signal = controller.signal;
 
     try {
-      const response = await fetch(`/api/tasks/archive`, {
+      const response = await fetch(`${apiUrl}/api/tasks/archive`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +158,7 @@ function App() {
     const signal = controller.signal;
 
     try {
-      const response = await fetch(`/api/tasks/rename`, {
+      const response = await fetch(`${apiUrl}/api/tasks/rename`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

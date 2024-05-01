@@ -1,16 +1,16 @@
-version: "2"
+version: "3.8"
 services:
-  # web:
-  #   build:
-  #     context: frontend
-  #     dockerfile: Dockerfile
-  #   image: webapp-frontend
-  #   environment:
-  #     API_URL: http://api:80
-  #   mem_reservation: 10m
-  #   mem_limit: 20m
-  #   ports:
-  #     - "127.0.0.1:8080:80"
+  web:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8081
+    image: webapp-frontend
+    mem_reservation: 10m
+    mem_limit: 20m
+    ports:
+      - "127.0.0.1:8080:80"
 
   api:
     build:
