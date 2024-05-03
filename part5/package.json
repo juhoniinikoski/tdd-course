@@ -13,6 +13,8 @@
     "npm": ">=10"
   },
   "scripts": {
+    "start": "docker compose up --build",
+    "start:e2e": "docker compose -f docker-compose.test.yaml up --build",
     "format": "prettier --write ."
   },
   "dependencies": {
