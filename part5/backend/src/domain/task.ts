@@ -88,3 +88,7 @@ export async function archiveCompleted(): Promise<Task[]> {
 
   return result;
 }
+
+export async function deleteAll(): Promise<void> {
+  await db.delete(task).execute();
+}

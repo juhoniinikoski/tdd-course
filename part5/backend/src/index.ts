@@ -84,6 +84,18 @@ app.put("/api/tasks/archive-completed", async (req, res) => {
   }
 });
 
+// expose this only for test container
+if (process.env.DATABASE_URL?.includes("db-test:5432/test")) {
+  app.get("/api/init", async (req, res) => {
+    try {
+      await Task.deleteAll();
+      res.status(200).send();
+    } catch (error) {
+      res.status(400).send();
+    }
+  });
+}
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

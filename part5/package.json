@@ -6,6 +6,8 @@
   "license": "Apache-2.0",
   "private": true,
   "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "@types/node": "^20.12.8",
     "prettier": "^3.1.1"
   },
   "engines": {
@@ -15,7 +17,9 @@
   "scripts": {
     "start": "docker compose up --build",
     "start:e2e": "docker compose -f docker-compose.test.yaml up --build",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:e2e": "pnpm exec playwright test",
+    "test:e2e-ui": "pnpm exec playwright test --ui"
   },
   "dependencies": {
     "express": "^4.19.2"
