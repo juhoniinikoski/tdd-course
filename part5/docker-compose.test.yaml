@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8081
+    image: webapp-test-frontend
+    mem_reservation: 10m
+    mem_limit: 20m
+    ports:
+      - "127.0.0.1:8080:80"
+
+  api:
+    depends_on:
+      - db-test
+    restart: always
+    build:
+      context: backend
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgresql://webapp:secret@db-test:5432/test
+    image: webapp-test-backend
+    mem_reservation: 100m
+    mem_limit: 200m
+    ports:
+      - "127.0.0.1:8081:80"
+
+  db-test:
+    image: postgres:13
+    environment:
+      POSTGRES_HOST: db-test
+      POSTGRES_DB: test
+      POSTGRES_USER: webapp
+      POSTGRES_PASSWORD: secret
+    mem_reservation: 100m
+    mem_limit: 200m
+    ports:
+      - "127.0.0.1:5432:5432"
