@@ -1,6 +1,7 @@
 import { Block } from "./Block";
 import { Shape } from "./Tetromino";
 import { Element } from "./Element";
+import { Score } from "./Score";
 
 type Matrix = string[][];
 
@@ -9,11 +10,12 @@ export class Board implements Shape {
   height: number;
   matrix: Matrix = [];
   fallingBlock: Element | undefined;
+  score: Score;
 
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
-
+    this.score = new Score();
     this.matrix = Array.from({ length: this.height }, () => ".".repeat(this.width).split(""));
   }
 
@@ -89,6 +91,10 @@ export class Board implements Shape {
       stop = true;
     }
 
+    if (stop) {
+      this.clearLines();
+    }
+
     this.fallingBlock = stop ? undefined : newElement;
   }
 
@@ -103,6 +109,11 @@ export class Board implements Shape {
       this.matrix.splice(row, 1);
       this.matrix.unshift(Array(this.getWidth()).fill("."));
     }
+    this.score.update(fullLines.length as keyof Score["points"]);
+  }
+
+  getScore() {
+    return this.score.getTotal();
   }
 
   hasFalling() {
