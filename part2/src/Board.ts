@@ -92,6 +92,19 @@ export class Board implements Shape {
     this.fallingBlock = stop ? undefined : newElement;
   }
 
+  clearLines() {
+    const fullLines = [];
+    for (let row = 0; row < this.getHeight(); row++) {
+      if (this.matrix[row].every((cell) => cell !== ".")) {
+        fullLines.push(row);
+      }
+    }
+    for (const row of fullLines) {
+      this.matrix.splice(row, 1);
+      this.matrix.unshift(Array(this.getWidth()).fill("."));
+    }
+  }
+
   hasFalling() {
     return !!this.fallingBlock;
   }
