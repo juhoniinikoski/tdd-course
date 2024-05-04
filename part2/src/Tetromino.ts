@@ -55,7 +55,7 @@ export class Tetromino implements Shape {
   );
 
   static fromString(currentOrientation: number, orientationCount: number, initialShape: string) {
-    const shape = RotatingShape.fromString(initialShape);
+    const shape = new RotatingShape(initialShape);
     const orientations = [shape, shape.rotateRight(), shape.rotateRight().rotateRight(), shape.rotateLeft()].slice(
       0,
       orientationCount

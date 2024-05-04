@@ -3,27 +3,21 @@ import { Shape } from "./Tetromino";
 export class RotatingShape implements Shape {
   width: number;
   height: number;
-  shape;
+  shape: string[][];
 
-  static fromString(shape: string) {
-    return new RotatingShape(
-      shape
-        .replaceAll(" ", "")
-        .trim()
-        .split("\n")
-        .map((row) => row.split(""))
-    );
-  }
-
-  constructor(shape: string[][]) {
-    this.shape = shape;
-    this.width = shape[0].length;
-    this.height = shape.length;
+  constructor(shapeString: string) {
+    this.shape = shapeString
+      .replaceAll(" ", "")
+      .trim()
+      .split("\n")
+      .map((row) => row.split(""));
+    this.width = this.shape[0].length;
+    this.height = this.shape.length;
   }
 
   rotateRight() {
     const newShape = this.shape[0].map((_, i) => this.shape.map((row) => row[i]).reverse());
-    return new RotatingShape(newShape);
+    return new RotatingShape(newShape.map((row) => row.join("")).join("\n"));
   }
 
   rotateLeft() {

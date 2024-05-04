@@ -9,7 +9,7 @@ export class Element implements Shape {
   constructor(shape: Shape, y: number, x: number) {
     const shapeString = shapeToString(shape);
 
-    this.shape = RotatingShape.fromString(shapeString);
+    this.shape = new RotatingShape(shapeString);
     this.y = y;
     this.x = x;
   }
