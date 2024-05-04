@@ -1,4 +1,5 @@
 import { RotatingShape } from "./RotatingShape";
+import { Shape as ShapeClass } from "./Shape";
 
 const SHAPE_TYPES = {
   T: "T",
@@ -29,52 +30,31 @@ export class Tetromino implements Shape {
   currentOrientation;
   orientations;
   shape;
+  shapeType;
 
-  static T_SHAPE = Tetromino.fromString(
-    0,
-    4,
-    `.T.
-     TTT
-     ...`
-  );
-  static I_SHAPE = Tetromino.fromString(
-    0,
-    2,
-    `.....
-     .....
-     IIII.
-     .....
-     .....`
-  );
-  static O_SHAPE = Tetromino.fromString(
-    0,
-    1,
-    `.OO
-     .OO
-     ...`
-  );
+  static T_SHAPE = new Tetromino(ShapeClass.T_SHAPE.rotations[0], 0);
+  static I_SHAPE = new Tetromino(ShapeClass.I_SHAPE.rotations[0], 0);
+  static O_SHAPE = new Tetromino(ShapeClass.O_SHAPE.rotations[0], 0);
 
-  static fromString(currentOrientation: number, orientationCount: number, initialShape: string) {
-    const shape = new RotatingShape(initialShape);
-    const orientations = [shape, shape.rotateRight(), shape.rotateRight().rotateRight(), shape.rotateLeft()].slice(
-      0,
-      orientationCount
+  constructor(shapeString: string, currentOrientation: number) {
+    this.shapeType = this.getShapeType(shapeString);
+    this.currentOrientation = currentOrientation;
+    this.orientations = ShapeClass.getShapeByType(this.shapeType!).rotations.length;
+    this.shape = new RotatingShape(
+      ShapeClass.getRotation(ShapeClass.getShapeByType(this.shapeType!), this.currentOrientation)
     );
-    return new Tetromino(currentOrientation, orientations);
   }
 
-  constructor(currentOrientation: number, orientations: RotatingShape[]) {
-    this.currentOrientation = (currentOrientation + orientations.length) % orientations.length;
-    this.orientations = orientations;
-    this.shape = orientations[this.currentOrientation];
+  getShapeType(shapeString: string) {
+    return ShapeClass.getAvailableShapes().find((shape) => shapeString.includes(shape));
   }
 
   rotateRight() {
-    return new Tetromino(this.currentOrientation + 1, this.orientations);
+    return new Tetromino(this.shape.toString(), (this.currentOrientation + 1) % this.orientations);
   }
 
   rotateLeft() {
-    return new Tetromino(this.orientations.length - this.currentOrientation - 1, this.orientations);
+    return new Tetromino(this.shape.toString(), (this.currentOrientation - 1 + this.orientations) % this.orientations);
   }
 
   getWidth() {
@@ -86,7 +66,7 @@ export class Tetromino implements Shape {
   }
 
   getBlock(y: number, x: number) {
-    return this.orientations[this.currentOrientation].getBlock(y, x);
+    return this.shape.getBlock(y, x);
   }
 
   toString() {
